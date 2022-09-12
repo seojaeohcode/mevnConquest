@@ -161,6 +161,15 @@ for(const y of iter2){
 
 fxjs사용
 함수형 프로그래밍
+_.go 즉시실행 pipe함수 함수합성을 해서 즉시 실행
+_.map 새로운 배열은 반환 어떤 가공도 하지 않는다.
+_.filter 홀수인 요소만 있는 배열을 만듭니다.
+_.take 그중 2개를 추출
+
+이터레이터는 next()메서드로 yield로 반환하는 값을 꺼내지않는 한 작동하지 않는다.
+그래서 map filter take함수가 합성되어 이터레이터를 넘기고
+마지막 take에서 yield되기 전까지는 작동하지 않아 함수들이 합성되는 효과를 가지며 
+요소들을 하나씩 검사할 수 있는 것.
 */
 
 const _ = require("fxjs/Strict")
@@ -170,8 +179,8 @@ const C = require("fxjs/Concurrency")
 const num = [1,2,3,4,5,6,7,8]
 const ret2 = _.go(
     num,
-    _.map(a=>a),
-    _.filter(a=>a%2),
+    _.map(num=>num),
+    _.filter(num=>num%2),
     _.take(2)
 )
 
@@ -179,9 +188,47 @@ console.log(ret2)
 
 const ret_lazy = _.go(
     num,
-    L.map(a=>a),
-    L.filter(a=>a%2),
+    L.map(num=>num),
+    L.filter(num=>num%2),
     L.take(2)
 )
 
 console.log([...ret_lazy])
+
+// 제너레이터 => 웹 스크래핑
+/* 
+웹 스크래핑(웹 크롤링)
+웹 페이지로부터 원하는 정보를 추출하는 기법
+
+웹 스크래핑 2가지 방법
+1.웹사이트에 요청을 보내서 하는 방법
+2.실제 웹브라우저 드라이버를 이용해 마치 유저가
+마우스로 클릭을 한다거나 하는 드으이 행위를 위조해서 하는 방법
+
+ex)무한스크롤의 경우 request로는 불가능 그래서 2번방법 사용
+
+비동기 파이프라인 구성에서 쓰는 vo모듈
+웹 스크래핑에 쓰는 nightmare 설치
+*/
+
+const Nightmare = require('nightmare')
+const vo = require('vo')
+const nightmare = Nightmare({
+    show: true
+})
+const BASE_URL = `https://grafolio.naver.com/category/painting`
+const GRAPOLIO_URL = `${BASE_URL}#category_popular_creator`
+
+function* run(){
+    yield nightmare.goto(GRAPOLIO_URL)
+    let prevHeight, currHeight = 0
+    while(prevHeight !== currHeight){
+        prevHeight = currHeight
+        currHeight = yield nightmare.evaluate(()=>document.body.scrollHeight)
+        yield nightmare.scrollTo(currHeight,0).wait(3000)
+    }
+    const z = yield nightmare.evaluate(() => Array.from(document.querySelectorAll('a.thumb')).map(e=>(`https://grafolio.naver.com${e.getAttribute('href')}`)))
+    console.log(z)
+    yield nightmare.end()
+}
+vo(run)(()=>console.log('스크래핑이 완료되었습니다.'))
