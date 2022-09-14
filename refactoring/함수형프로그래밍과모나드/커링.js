@@ -7,3 +7,8 @@
 
 ramda.js => 함수형 프로그래밍을 도와주는 라이브러리
 */
+
+const R = require('ramda')
+const a = R.add(1)
+const b = a(2)
+console.log(b)
