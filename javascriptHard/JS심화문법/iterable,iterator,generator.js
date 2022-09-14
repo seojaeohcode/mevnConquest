@@ -5,7 +5,7 @@ JS => 이터러블 프로토콜이라는 규칙을 준수한 객체
 규칙 = Symbol.iterator 메서드를 가짐.
 Symbol.iterator는 next()라는 메서드를 가진 객체 반환
 next()메서드는 value와 done 프로퍼티를 가짐.
-value = yield한 값, done = return 유무
+value = yield한 값, done     = return 유무
 대표적으로 배열은 Symbol.iterator 메서드를 가짐.
 */
 const a = ["사과","딸기","포도","배"]
