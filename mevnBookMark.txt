@@ -20,3 +20,7 @@
 7.실습
 8장 430p까지 완료
 
+milkyway => 정리
+seojaeohcode 정리사이트 => 서표사이트 추가
+책=> 주식사이트 + 심화문법 라이브러리 습득
+django 강의 => https://www.youtube.com/watch?v=9WctwW_Pe1o&list=PLi4xPOplIq7d1vDdLBAvS5PmQR-p6KwUz&index=2
