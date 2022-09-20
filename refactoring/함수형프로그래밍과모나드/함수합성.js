@@ -23,4 +23,5 @@ const f_pipe = pipe(
     map(a => a+1),
     filter(a=>a%2)
 )
-const ret3 =
+const ret3 = f_pipe([1,2,3,4])
+console.log(ret3)
