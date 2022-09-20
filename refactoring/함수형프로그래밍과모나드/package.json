@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "fxjs": "^0.21.3",
     "ramda": "^0.28.0"
   }
 }

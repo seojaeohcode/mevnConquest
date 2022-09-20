@@ -12,3 +12,27 @@ const R = require('ramda')
 const a = R.add(1)
 const b = a(2)
 console.log(b)
+
+const addFourNumbers = (a,b,c,d) => a+b+c+d
+const curriedFourNumbers = R.curry(addFourNumbers)
+const f = curriedFourNumbers(1,2)
+const g = f(3)
+
+//커스텀 커링
+const curry = fn => a => b=> fn(a,b)
+//ES5
+var curry2 = function(fn){
+    return function(a){
+        return function(b) {
+            return fn(a,b)
+        }
+    }
+}
+
+const f1 = curry2((a,b)=>a+b)
+const f2 = f1(1)
+const ret = f2(2)
+console.log(ret)
+
+//fxjs curry 
+//export const curry = f => (a, ..._) => _.length ? f(a, ..._) : (..._) => f(a, ..._)
